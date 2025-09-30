@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: User_Posts
+    environment:
+      POSTGRES_USER: up_user
+      POSTGRES_PASSWORD: up_pass
+      POSTGRES_DB: users_posts_db
+      PGDATA: /data
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata:/data
