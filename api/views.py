@@ -1,25 +1,32 @@
 # API методы
-from fastapi import APIRouter
+from fastapi import APIRouter,Request
 from models.shemas.users import  UsersReadList,UsersCreateList
 from api.db_controller.db_methotds import list_users,list_user_posts,create_user,create_post
 from models.db_async import get_async_session
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Depends
+from fastapi.responses import HTMLResponse
 from models.shemas.posts import PostReadList
+from fastapi.templating import Jinja2Templates
+
 router = APIRouter(
     prefix="/users",
     tags=["users"],
 )
 
+templates = Jinja2Templates(directory="templates")
 
 @router.get(
     "/",
-    response_model=list[UsersReadList],
+    response_model=list[UsersReadList],response_class=HTMLResponse,
 )
-async def get_users_list(session:AsyncSession = Depends(get_async_session)) -> list[UsersReadList]:
+async def get_users_list(request:Request,session:AsyncSession = Depends(get_async_session)) -> list[UsersReadList]:
     """ Список пользователей """
     results = await list_users(session)
-    return results
+    context = {"request":request,
+               "userlist":results}
+    return templates.TemplateResponse("userlist.html",context)
+
 
 
 @router.get("/posts/{user_id}/",
