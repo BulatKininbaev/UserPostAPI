@@ -3,13 +3,15 @@
 
 function display(menu){
 
+//document.getElementById('table_list').style.display = 'block';
+document.getElementById('input_info').style.display = 'block';
 document.getElementById('table_list').style.visibility = (menu === 'list')?'visible':'hidden';
 document.getElementById('input_info').style.visibility = (menu === 'add')?'visible':'hidden';
 
 
 switch (menu) {
     case "list":
-    //    GetList();
+        GetList();
              }
 }
 
@@ -42,7 +44,7 @@ function AddList(){
     let user_name = document.getElementById('user_name').value;
     let user_address = document.getElementById('user_address').value;
 
-    let  contactinfo = [{"name":fio,"user_name":user_name,"user_address":user_address}];
+    let  contactinfo = {"user_id":0,"name":fio,"user_name":user_name,"user_address":user_address};
 fetch(apiUrl, {
   method: "POST",
   body: JSON.stringify(contactinfo),
